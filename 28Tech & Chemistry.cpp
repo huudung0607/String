@@ -1,61 +1,50 @@
 #include <iostream>
-#include <algorithm>
-#include <vector>
-#include <set>
-#include <map>
-#include <cmath>
-#include <numeric>
-#include <climits>
-#include <iomanip>
 #include <string>
-#include <sstream>
-#include <queue>
-#include <stack>
-#include <unordered_map>
+#include <map>
+#include <vector>
 using namespace std;
-long long ntk(string s, map<string,int> m)
-{
-	long long sum = 0;
-	for (size_t i = 0; i < s.size();)
-	{
-		string e(1, s[i++]);
-		if (i < s.size() && islower(s[i]))
-		{
-			e += s[i++];
-		}
-		int cnt = 0;
-		while (i < s.size() && isdigit(s[i]))
-		{
-			cnt = cnt * 10 + (s[i++] - '0');
-		}
-		if (cnt ==0)
-		{
-			cnt = 1;
-		}
-		if (m.count(e))
-		{
-			sum += m[e] * cnt;
-		}
-	}
-	return sum;
-}
-int main()
-{
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	map<string, int> nthh;
+
+int main() {
+	map<string, int> mp;
 	for (int i = 0; i < 10; i++)
 	{
-		string s; int m;
-		cin >> s >> m;
-		nthh.insert({ s,m });
+		string nt;
+		int ntk;
+		cin >> nt >> ntk;
+		mp.insert({ nt,ntk });
 	}
 	int t;
 	cin >> t;
 	while (t--)
 	{
-		string s;
-		cin >> s;
-		cout << ntk(s, nthh) << endl;
+        string s;
+        cin >> s;
+        vector<pair<string, int>> v;
+        for (int i = 0; i < s.size(); ) {
+            string element = "";
+            if (isalpha(s[i])) {
+                element += s[i];
+                i++;
+                if (i < s.size() && islower(s[i])) {
+                    element += s[i];
+                    i++;
+                }
+            }
+            string number = "";
+            while (i < s.size() && isdigit(s[i])) {
+                number += s[i];
+                i++;
+            }
+            int count = (number == "") ? 1 : stoi(number);
+            v.push_back({ element, count });
+        }
+        int total = 0;
+        for (auto x : v) {
+            if (mp.find(x.first) != mp.end())
+            {
+                total += mp[x.first] * x.second;
+            }
+        }
+        cout << total << endl;
 	}
 }
